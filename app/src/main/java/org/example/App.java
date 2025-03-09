@@ -2,14 +2,14 @@ package org.example;
 
 public class App {
   public static void main(String[] args) {
-    String error = "Invalid spot\n";
+    String error = "Invalid input";
 
     TicTacToe tc = new TicTacToe();
 
     ConsoleDecorations.printBanner("TicTacToe");
     boolean repeat = true;
     while (repeat) {
-      while (tc.winningPlayer() == -1) {
+      while(tc.winningPlayer() == -1) {
         String divider = "Player " + tc.getCurrPlayer();
         String prompt = tc.stringBoard() + divider + " move: ";
 
@@ -22,7 +22,7 @@ public class App {
           if (tc.move(spot)) {
             invalidMove = false;
           } else {
-            System.out.println("Spot has already been taken");
+            System.out.println("Spot has already been taken\n");
           }
         } while(invalidMove);
       }

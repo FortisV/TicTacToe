@@ -1,25 +1,26 @@
 package org.example;
 
 public class TicTacToe {
-    private int rs, cs;
+    static final char PLAYER1 = 'X';
+    static final char PLAYER2 = 'O';
+    private int size;
     private int currPlayer;
     private char[][] board;
     public TicTacToe() {
-        rs = 3;
-        cs = 3;
+        size = 3;
         currPlayer = 1;
-        board = new char[cs][rs];
+        board = new char[size][size];
         reset();
     }
     void reset() {
-        for(int c = 0; c < cs; ++c) {
-            for(int r = 0; r < rs; ++r) {
+        for(int c = 0; c < size; ++c) {
+            for(int r = 0; r < size; ++r) {
                 board[c][r] = (char) ('1' + r * 3 + c);
             }
         }
     }
     void printBoard() {
-        for(int r = 0; r < rs; ++r) {
+        for(int r = 0; r < size; ++r) {
             if(r != 0) {
                 System.out.println("-----+-----+-----");
             }
@@ -28,7 +29,7 @@ public class TicTacToe {
     }
     String stringBoard() {
         String str = "";
-        for(int r = 0; r < rs; ++r) {
+        for(int r = 0; r < size; ++r) {
             if(r != 0) {
                 str += "-----+-----+-----\n";
             }
@@ -37,80 +38,72 @@ public class TicTacToe {
         return str;
     }
     boolean move(int spot) {
-        if(spot < 1 || rs * cs < spot) {
+        if(spot < 1 || 9 < spot) {
             return false;
         }
         spot--;
-        int r = spot / rs;
-        int c = spot % cs;
-        if(board[c][r] == 'X' || board[c][r] == 'O') {
+        int r = spot / size;
+        int c = spot % size;
+        if(board[c][r] == PLAYER1 || board[c][r] == PLAYER2) {
             return false;
         }
         if(currPlayer == 1) {
-            board[c][r] = 'X';
+            board[c][r] = PLAYER1;
             currPlayer = 2;
         } else if(currPlayer == 2) {
-            board[c][r] = 'O';
+            board[c][r] = PLAYER2;
             currPlayer = 1;
         }
         return true;
     }
+    boolean isPlayerWin(char player) {
+        for(int i = 0; i < size; ++i) {
+            if(board[i][0] == player &&
+               board[i][1] == player &&
+               board[i][2] == player) {
+                return true;
+            }
+            if(board[0][i] == player &&
+               board[1][i] == player &&
+               board[2][i] == player) {
+                return true;
+            }
+        }
+        if(board[0][0] == player &&
+           board[1][1] == player &&
+           board[2][2] == player) {
+            return true;
+        }
+        if(board[2][0] == player &&
+           board[1][1] == player &&
+           board[0][2] == player) {
+            return true;
+        }
+        return false;
+    }
+    boolean fullBoard() {
+        for(int r = 0; r < size; ++r) {
+            for(int c = 0; c < size; ++c) {
+                if(board[c][r] != PLAYER1 &&
+                   board[c][r] != PLAYER2) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     int winningPlayer() {
-        int player = 0;
-        boolean winner = false;
-        char currChar = ' ';
-        for(int c = 0; c < cs && !winner; ++c) {
-            winner = true;
-            currChar = board[c][0];
-            for(int r = 1; r < rs && winner; ++r) {
-                if(currChar != board[c][r]) {
-                    winner = false;
-                }
-            }
+        if(isPlayerWin(PLAYER1)) {
+            return 1;
         }
-        for(int r = 0; r < rs && !winner; ++r) {
-            winner = true;
-            currChar = board[0][r];
-            for(int c = 1; c < cs && winner; ++c) {
-                if(currChar != board[c][r]) {
-                    winner = false;
-                }
-            }
+        if(isPlayerWin(PLAYER2)) {
+            return 2;
         }
-        if(!winner) {
-            winner = true;
-            currChar = board[0][0];
-            for(int i = 1; i < rs; ++i) {
-                if(currChar != board[i][i]) {
-                    winner = false;
-                }
-            }
-        }
-        if(!winner) {
-            winner = true;
-            currChar = board[cs - 1][0];
-            for(int i = 1; i < rs; ++i) {
-                if(currChar != board[cs - i - 1][i]) {
-                    winner = false;
-                }
-            }
-        }
-        if(winner) {
-            if(currChar == 'X') {
-                player = 1;
-            } else if(currChar == 'O') {
-                player = 2;
-            }
+        if(fullBoard()) {
+            return 0;
         } else {
-            for(int c = 0; c < cs; ++c) {
-                for(int r = 0; r < rs; ++r) {
-                    if(board[c][r] != 'X' && board[c][r] != 'O') {
-                        player = -1;
-                    }
-                }
-            }
+            return -1;
         }
-        return player;
     }
     int getCurrPlayer() {
         return currPlayer;

@@ -53,7 +53,7 @@ class AppTest {
   void p2horizontal() {
     tc.move(6);
     tc.move(1);
-    tc.move(4);
+    tc.move(7);
     tc.move(2);
     tc.move(5);
     tc.move(3);
