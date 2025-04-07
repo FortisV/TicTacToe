@@ -47,3 +47,29 @@ public class ConsoleDecorations {
         printDivider("");
     }
 }
+
+
+/*
+
+
++ VERT_CHAR = '|' : char
++ HORZ_CHAR = '-' : char
++ CORN_CHAR = '@' : char
++ BLANK_CHAR = ' ' : char
++ DIV_CHAR = '-' : char
++ CONSOLE_WIDTH = 80 : int
+
++ line(char, int) : String
++ banner(String) : String
++ printBanner(String) : void
++ printBanner() : void
++ divider(String) : String
++ printDivider(String) : void
++ printDivider() : void
+
+
+
+
+
+
+*/

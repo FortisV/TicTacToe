@@ -83,3 +83,23 @@ public class Input {
         return input;
     }
 }
+
+/*
+
+- SCANNER : Scanner
+
++ getDoubleMax(double, String, String) : double
++ getDoubleMin(double, String, String) : double
++ getDouble(String, String) : double
++ getDouble(double, double, String) : double
++ getIntegerMax(int, String, String) : int
++ getIntegerMin(int, String, String) : int
++ getInteger(String, String) : int
++ getInteger(int, int, String) : int
++ getString(String, String) : String
++ getString(boolean, String, String) : String
+
+
+
+
+*/

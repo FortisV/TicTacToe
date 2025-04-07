@@ -12,14 +12,18 @@ public class TicTacToe {
         board = new char[size][size];
         reset();
     }
-    void reset() {
+    public void reset(int firstPlayer) {
+        currPlayer = firstPlayer;
         for(int c = 0; c < size; ++c) {
             for(int r = 0; r < size; ++r) {
                 board[c][r] = (char) ('1' + r * 3 + c);
             }
         }
     }
-    void printBoard() {
+    public void reset() {
+        reset(1);
+    }
+    public void printBoard() {
         for(int r = 0; r < size; ++r) {
             if(r != 0) {
                 System.out.println("-----+-----+-----");
@@ -27,7 +31,7 @@ public class TicTacToe {
             System.out.println("  " + board[0][r] + "  |  " + board[1][r] + "  |  " + board[2][r] + "  ");
         }
     }
-    String stringBoard() {
+    public String stringBoard() {
         String str = "";
         for(int r = 0; r < size; ++r) {
             if(r != 0) {
@@ -37,7 +41,7 @@ public class TicTacToe {
         }
         return str;
     }
-    boolean move(int spot) {
+    public boolean move(int spot) {
         if(spot < 1 || 9 < spot) {
             return false;
         }
@@ -56,7 +60,7 @@ public class TicTacToe {
         }
         return true;
     }
-    boolean isPlayerWin(char player) {
+    public boolean isPlayerWin(char player) {
         for(int i = 0; i < size; ++i) {
             if(board[i][0] == player &&
                board[i][1] == player &&
@@ -81,7 +85,7 @@ public class TicTacToe {
         }
         return false;
     }
-    boolean fullBoard() {
+    public boolean fullBoard() {
         for(int r = 0; r < size; ++r) {
             for(int c = 0; c < size; ++c) {
                 if(board[c][r] != PLAYER1 &&
@@ -92,7 +96,7 @@ public class TicTacToe {
         }
         return true;
     }
-    int winningPlayer() {
+    public int winningPlayer() {
         if(isPlayerWin(PLAYER1)) {
             return 1;
         }
@@ -105,7 +109,29 @@ public class TicTacToe {
             return -1;
         }
     }
-    int getCurrPlayer() {
+    public int getCurrPlayer() {
         return currPlayer;
     }
 }
+
+/*
+
+
++ PLAYER1 : char = 'X'
++ PLAYER2 : char = 'O'
+- size : int
+- currPlayer : int
+- board : char[][]
+
++ reset() : void
++ printBoard() : void
++ stringBoard() : String
++ move(int) : boolean
++ isPlayerWin(char) : boolean
++ fullBoard() : boolean
++ winningPlayer() : int
++ getCurrPlayer() : int
+
+
+
+*/

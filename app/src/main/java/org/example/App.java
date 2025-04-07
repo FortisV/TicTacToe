@@ -1,25 +1,35 @@
 package org.example;
 
+
+
 public class App {
-  TicTacToe tc;
-  App() {
+  private TicTacToe tc;
+  private int firstPlayer;
+  private int p1w;
+  private int p2w;
+  private int tie;
+  public App() {
     tc = tc = new TicTacToe();
+    firstPlayer = 1;
+    p1w = 0;
+    p2w = 0;
+    tie = 0;
   }
-  void greet() {
+  private void greet() {
     ConsoleDecorations.printBanner("TicTacToe");
   }
-  void exit() {
+  private void exit() {
     ConsoleDecorations.printBanner("Exiting...");
   }
-  boolean playAgain() {
+  private boolean playAgain() {
     ConsoleDecorations.printDivider("Play Again?");
     String playAgainPrompt = "(1) Yes\n" +
-            "(2) No\n" +
-            "\n" +
-            "Input: ";
+                             "(2) No\n" +
+                             "\n" +
+                             "Input: ";
     return Input.getInteger(1, 2, playAgainPrompt, "Invalid Input") == 1;
   }
-  void startGame() {
+  private void startGame() {
     while(tc.winningPlayer() == -1) {
       String divider = "Player " + tc.getCurrPlayer();
       String prompt = tc.stringBoard() + divider + " move: ";
@@ -38,9 +48,22 @@ public class App {
         }
       } while(invalidMove);
     }
-
+    if(tc.winningPlayer() != 0) {
+      firstPlayer = tc.winningPlayer();
+    }
+    switch(tc.winningPlayer()) {
+      case 0:
+        tie++;
+        break;
+      case 1:
+        p1w++;
+        break;
+      case 2:
+        p2w++;
+        break;
+    }
   }
-  void displayWinner() {
+  private void displayWinner() {
     if (tc.winningPlayer() == 0) {
       ConsoleDecorations.printBanner("Draw");
     } else {
@@ -48,19 +71,56 @@ public class App {
     }
     tc.printBoard();
   }
-  void reset() {
-    tc.reset();
+  private void reset() {
+    tc.reset(firstPlayer);
   }
-  void run() {
+  private void printGameLog() {
+    ConsoleDecorations.printDivider("Statistics");
+    System.out.println("Player 1 Wins: " + p1w);
+    System.out.println("Player 2 Wins: " + p2w);
+    System.out.println("Ties         : " + tie);
+  }
+  private void saveGameLog() {
+    ConsoleDecorations.printDivider("Saving Statistics");
+    System.out.println("Saving game statistics to game.txt");
+    Writer writer = new Writer();
+    writer.openFile("game.txt");
+    writer.println("Player 1 Wins: " + p1w);
+    writer.println("Player 2 Wins: " + p2w);
+    writer.println("Ties         : " + tie);
+    writer.close();
+  }
+  public void run() {
     greet();
     do {
       startGame();
       displayWinner();
+      printGameLog();
       reset();
     } while(playAgain());
+    saveGameLog();
     exit();
   }
   public static void main(String[] args) {
     new App().run();
   }
 }
+
+/*
+
+
+
+- tc : TicTacToe
+
+- greet (): void
+- exit() : void
+- playAgain() : boolean
+- startGame() : void
+- displayWinner() : void
+- reset() : void
++ run() : void
+
+
+
+
+*/
