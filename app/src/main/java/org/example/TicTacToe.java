@@ -1,24 +1,33 @@
 package org.example;
 
 public class TicTacToe {
-    static final char PLAYER1 = 'X';
-    static final char PLAYER2 = 'O';
+    static char PLAYER1 = 'X';
+    static char PLAYER2 = 'O';
+    private int currMove;
     private int size;
     private int currPlayer;
     private char[][] board;
     public TicTacToe() {
+        currMove = 0;
         size = 3;
         currPlayer = 1;
         board = new char[size][size];
         reset();
     }
+    public int getCurrMove() {
+        return currMove;
+    }
     public void reset(int firstPlayer) {
+        currMove = 0;
         currPlayer = firstPlayer;
         for(int c = 0; c < size; ++c) {
             for(int r = 0; r < size; ++r) {
                 board[c][r] = (char) ('1' + r * 3 + c);
             }
         }
+    }
+    public char[][] getBoard() {
+        return board;
     }
     public void reset() {
         reset(1);
@@ -58,6 +67,7 @@ public class TicTacToe {
             board[c][r] = PLAYER2;
             currPlayer = 1;
         }
+        currMove++;
         return true;
     }
     public boolean isPlayerWin(char player) {
@@ -111,6 +121,17 @@ public class TicTacToe {
     }
     public int getCurrPlayer() {
         return currPlayer;
+    }
+    public char getPos(int spot) {
+        int r = spot / size;
+        int c = spot % size;
+        return board[r][c];
+    }
+    public char getPlayer1Char() {
+        return PLAYER1;
+    }
+    public char getPlayer2Char() {
+        return PLAYER2;
     }
 }
 

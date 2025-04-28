@@ -1,15 +1,17 @@
 package org.example;
 
-
-
 public class App {
   private TicTacToe tc;
+  private int computerPlayerNum;
+  private ComputerPlayer computerPlayer;
   private int firstPlayer;
   private int p1w;
   private int p2w;
   private int tie;
   public App() {
     tc = tc = new TicTacToe();
+    computerPlayerNum = 0;
+    computerPlayer = null;
     firstPlayer = 1;
     p1w = 0;
     p2w = 0;
@@ -17,6 +19,28 @@ public class App {
   }
   private void greet() {
     ConsoleDecorations.printBanner("TicTacToe");
+  }
+  private void gameType() {
+    ConsoleDecorations.printDivider("Choose Game Type");
+    String gameTypePrompt = "(1) Human vs Human\n" +
+                            "(2) Human vs Computer\n" +
+                            "(3) Computer vs Human\n" +
+                            "\n" +
+                            "Input: ";
+    int gameType = Input.getInteger(1, 3, gameTypePrompt, "Invalid Input");
+    switch(gameType) {
+      case 1:
+        computerPlayerNum = 0;
+        break;
+      case 2:
+        computerPlayerNum = 2;
+        computerPlayer = new ComputerPlayer(tc.getPlayer2Char(), tc.getPlayer1Char());
+        break;
+      case 3:
+        computerPlayerNum = 1;
+        computerPlayer = new ComputerPlayer(tc.getPlayer1Char(), tc.getPlayer2Char());
+        break;
+    }
   }
   private void exit() {
     ConsoleDecorations.printBanner("Exiting...");
@@ -29,27 +53,47 @@ public class App {
                              "Input: ";
     return Input.getInteger(1, 2, playAgainPrompt, "Invalid Input") == 1;
   }
+  private void humanMove() {
+    String divider = "Player " + tc.getCurrPlayer();
+    String prompt = tc.stringBoard() + divider + " move: ";
+    String error = "Invalid input";
+
+    ConsoleDecorations.printDivider(divider);
+
+    int spot;
+    boolean invalidMove = true;
+    do {
+      spot = Input.getInteger(1, 9, prompt, error);
+      if (tc.move(spot)) {
+        invalidMove = false;
+      } else {
+        System.out.println("Spot has already been taken\n");
+      }
+    } while(invalidMove);
+  }
+  private void computerMove() {
+    ConsoleDecorations.printDivider("Computer " + tc.getCurrPlayer());
+    tc.printBoard();
+    if(tc.getCurrMove() == 0) {
+      tc.move(computerPlayer.firstMove());
+    } else if(tc.getCurrMove() == 1) {
+      tc.move(computerPlayer.secondMove(tc.getBoard()));
+    } else {
+      tc.move(computerPlayer.bestMove(tc.getBoard()));
+    }
+  }
   private void startGame() {
     while(tc.winningPlayer() == -1) {
-      String divider = "Player " + tc.getCurrPlayer();
-      String prompt = tc.stringBoard() + divider + " move: ";
-      String error = "Invalid input";
-
-      ConsoleDecorations.printDivider(divider);
-
-      int spot;
-      boolean invalidMove = true;
-      do {
-        spot = Input.getInteger(1, 9, prompt, error);
-        if (tc.move(spot)) {
-          invalidMove = false;
-        } else {
-          System.out.println("Spot has already been taken\n");
-        }
-      } while(invalidMove);
+      if(tc.getCurrPlayer() == computerPlayerNum) {
+        computerMove();
+      } else {
+        humanMove();
+      }
     }
-    if(tc.winningPlayer() != 0) {
-      firstPlayer = tc.winningPlayer();
+    if(tc.winningPlayer() == 1) {
+      firstPlayer = 2;
+    } else if(tc.winningPlayer() == 2) {
+      firstPlayer = 1;
     }
     switch(tc.winningPlayer()) {
       case 0:
@@ -92,6 +136,7 @@ public class App {
   }
   public void run() {
     greet();
+    gameType();
     do {
       startGame();
       displayWinner();
