@@ -39,6 +39,17 @@ public class ComputerPlayer {
            board[(c + 2) % 3][r] == checkingChar) {
             return true;
         }
+        if(r == c) {
+            if(board[(c + 1) % 3][(r + 1) % 3] == checkingChar &&
+               board[(c + 2) % 3][(r + 2) % 3] == checkingChar) {
+                return true;
+            }
+        } else if(r == 2 - c) {
+            if(board[(c + 1) % 3][(r + 2) % 3] == checkingChar &&
+               board[(c + 2) % 3][(r + 1) % 3] == checkingChar) {
+                return true;
+            }
+        }
         return false;
     }
     int bestMove(char[][] board) {
